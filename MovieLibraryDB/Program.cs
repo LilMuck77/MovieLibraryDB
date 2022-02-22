@@ -16,39 +16,7 @@ namespace MovieLibraryDB
                 .BuildServiceProvider();
             var logger = serviceProvider.GetService<ILoggerFactory>().CreateLogger<Program>();*/
 
-            int squareRoot = (int)Math.Sqrt(2);
-
-            int x = 0;
-            int remainder = 0;
-
-            string hexDec = "";
-
-
-
-            while (squareRoot != 0)
-            {
-                remainder = squareRoot % 16;
-                if (remainder < 10)
-                {
-                    remainder = remainder + 48;
-                    Console.WriteLine(remainder);
-                }
-                else
-                {
-                    remainder = remainder + 55;
-                    Console.WriteLine(remainder);
-                }
-                hexDec += Convert.ToChar(remainder);
-                squareRoot = squareRoot / 16;
-            }
-
-            Console.Write("Hexa-decimal number : ");
-            for (x = hexDec.Length - 1; x >= 0; x--)
-            {
-                Console.Write(hexDec[x]);
-            }
-
-            Console.WriteLine();
+            
 
 
 
