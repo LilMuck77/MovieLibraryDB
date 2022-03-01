@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MovieLibraryDB.Services
+namespace MovieLibraryDB.Interfaces
 {
-    public interface IMain
+    public interface IMainService
     {
         void Invoke();
     }

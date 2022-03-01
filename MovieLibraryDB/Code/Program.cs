@@ -1,8 +1,9 @@
 ﻿/*using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+*//*using Microsoft.Extensions.Logging;
 using NLog.Web;*/
+using MovieLibraryDB.Services;
 
-namespace MovieLibraryDB
+namespace MovieLibraryDB.Code
 {
     class Program
     {
@@ -16,12 +17,27 @@ namespace MovieLibraryDB
                 .BuildServiceProvider();
             var logger = serviceProvider.GetService<ILoggerFactory>().CreateLogger<Program>();*/
 
-            
 
+/*
+            //StartUp broken?
+            try
+            {
+                var startUp = new StartUp();
+                var serviceProvider = startUp.ConfigureServices();
+                var service = serviceProvider.GetService<IMainService>();
+
+                service?.Invoke();
+            }
+
+            catch (Exception e)
+            {
+                Console.Error.WriteLine(e);
+            }*/
 
 
 
             string MovieListFile = "movies.csv";
+            
 
             //exception handle existing file
             if (!File.Exists(MovieListFile))
@@ -40,6 +56,7 @@ namespace MovieLibraryDB
                     //display menu
                     Console.WriteLine("1) Display Movies ");
                     Console.WriteLine("2) Add A New Movie");
+                    Console.WriteLine("3) Media Display Choice");
                     //Etra menu Items
                     //Console.WriteLine("3) Display Last Added Movie");
                     //Console.WriteLine("4) Look Up Movie by Id.");
@@ -97,9 +114,9 @@ namespace MovieLibraryDB
                         //close movie file when done
                         sr.Close();
 
-                    
-                  
-                    
+
+
+
 
                     if (usersChoice == "1")
                     {
@@ -151,7 +168,7 @@ namespace MovieLibraryDB
                         }
                         else
                         {
-                            Console.WriteLine(IdList);
+
                             //make new movie element
                             long newMovieId = IdList.Max() + 1;
                             //get genres
@@ -192,6 +209,30 @@ namespace MovieLibraryDB
 
                         }
 
+
+
+                    }
+
+                    else if (usersChoice == "3")
+                    {
+                        Console.WriteLine("Which Media would you like to display? 1) Movie, 2) Show, 3)Video");
+                        string myChoice = Console.ReadLine();
+
+                        if (myChoice == "1") 
+                        {
+                            Media media = new Movie();
+                            media.Display();
+                        }
+                        else if (myChoice == "2")
+                        {
+                            Media media = new Show();
+                            media.Display();
+                        }
+                        else if (myChoice == "3")
+                        {
+                            Media media = new Video();
+                            media.Display();
+                        }
 
 
                     }
