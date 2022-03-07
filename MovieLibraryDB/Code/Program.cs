@@ -34,8 +34,7 @@ namespace MovieLibraryDB.Code
                 Console.Error.WriteLine(e);
             }*/
 
-
-
+            var mediaManager = new MediaManager();
             string MovieListFile = "movies.csv";
             
 
@@ -50,7 +49,7 @@ namespace MovieLibraryDB.Code
             {
                 //jump into file
                 //read menu
-                string usersChoice;
+                string myMenuChoice;
                 do
                 {
                     //display menu
@@ -62,7 +61,7 @@ namespace MovieLibraryDB.Code
                     //Console.WriteLine("4) Look Up Movie by Id.");
                     Console.WriteLine("Press enter or any other key to quit");
 
-                    usersChoice = Console.ReadLine();
+                    myMenuChoice = Console.ReadLine();
                     
                     List<long> IdList = new List<long>();
                     List<string> TitleList = new List<string>();
@@ -118,7 +117,7 @@ namespace MovieLibraryDB.Code
 
 
 
-                    if (usersChoice == "1")
+                    if (myMenuChoice == "1")
                     {
                         //ask user input how many to display
 
@@ -153,7 +152,7 @@ namespace MovieLibraryDB.Code
 
 
                     }
-                    else if (usersChoice == "2")
+                    else if (myMenuChoice == "2")
                     {
                         // Add movie to list
                         // get user input for movie title
@@ -213,25 +212,24 @@ namespace MovieLibraryDB.Code
 
                     }
 
-                    else if (usersChoice == "3")
+                    else if (myMenuChoice == "3")
                     {
                         Console.WriteLine("Which Media would you like to display? 1) Movie, 2) Show, 3)Video");
-                        string myChoice = Console.ReadLine();
+                        string myMediaChoice = Console.ReadLine();
 
-                        if (myChoice == "1") 
+                        if (myMediaChoice == "1") 
                         {
-                            Media media = new Movie();
-                            media.Display();
+                            mediaManager.ListMovies();
                         }
-                        else if (myChoice == "2")
+                        else if (myMediaChoice == "2")
                         {
-                            Media media = new Show();
-                            media.Display();
+
+                            mediaManager.ListShows();
                         }
-                        else if (myChoice == "3")
+                        else if (myMediaChoice == "3")
                         {
-                            Media media = new Video();
-                            media.Display();
+
+                            mediaManager.ListVideos();
                         }
 
 
@@ -251,7 +249,7 @@ namespace MovieLibraryDB.Code
                     }*/
 
 
-                } while (usersChoice == "1" || usersChoice == "2" || usersChoice == "3" || usersChoice == "4");
+                } while (myMenuChoice == "1" || myMenuChoice == "2" || myMenuChoice == "3" || myMenuChoice == "4");
             }
         }
     }
