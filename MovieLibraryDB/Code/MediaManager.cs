@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace MovieLibraryDB.Code
 {
@@ -20,8 +17,8 @@ namespace MovieLibraryDB.Code
         {
             //ADD AND POPULATE ***MOVIE*** OBJECT LIST
             movies = new List<Movie>();
-            string MovieListFile = "movies10.csv";
-            StreamReader movieReader = new StreamReader(MovieListFile);
+            string movieListFile = "Files/movies10.csv";
+            StreamReader movieReader = new StreamReader(movieListFile);
             //Skip header
             movieReader.ReadLine();
             int movieCount = 0;
@@ -50,8 +47,8 @@ namespace MovieLibraryDB.Code
             //ADD AND POPULATE ***SHOW*** OBJECT LIST
             shows = new List<Show>();
 
-            string ShowFileList = "shows.csv";
-            StreamReader showReader = new StreamReader(ShowFileList);
+            string showFileList = "Files/shows.csv";
+            StreamReader showReader = new StreamReader(showFileList);
             //Skip header
             showReader.ReadLine();
             int showCount = 0;
@@ -77,8 +74,8 @@ namespace MovieLibraryDB.Code
             //ADD AND POPULATE ***VIDEO*** OBJECT LIST
             videos = new List<Video>();
 
-            string VideoFileList = "videos.csv";
-            StreamReader videoReader = new StreamReader(VideoFileList);
+            string videoFileList = "Files/videos.csv";
+            StreamReader videoReader = new StreamReader(videoFileList);
             //Skip header
             videoReader.ReadLine();
             int videoCount = 0;

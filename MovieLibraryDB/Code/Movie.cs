@@ -7,9 +7,6 @@ using System.Threading.Tasks;
 namespace MovieLibraryDB.Code
 {
 
-
-
-
     public class Movie : Media
     {
 

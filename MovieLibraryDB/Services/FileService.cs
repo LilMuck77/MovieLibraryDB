@@ -1,39 +1,45 @@
-﻿
+﻿using System;
+using Microsoft.Extensions.Logging;
+using MovieLibraryDB.Code;
 using MovieLibraryDB.Interfaces;
-using System;
 
+namespace MovieLibraryDB.Services;
 
-namespace MovieLibraryDB.Services
-{
-    public class FileService : IFileService
+    public class FileService : IService
     {
-        public void Read()
-        {
-            throw new NotImplementedException();
-        }
+    private readonly ILogger<IService> _logger;
 
-        public void Write()
-        {
-            throw new NotImplementedException();
-        }
-        /* private readonly ILogger<IFileService> _logger;
-
-public FileService(ILogger<IFileService> logger)
-{
-    _logger = logger;
-}
-
-public void Read()
-{
-    _logger.Log(LogLevel.Information, "Reading");
-    Console.WriteLine("*** I am reading");
-}
-public void Write()
-{
-    _logger.Log(LogLevel.Information, "Writing");
-  */
-       /* Console.WriteLine("*** I am writing");
-        }*/
-
+    public FileService(ILogger<IService> logger)
+    {
+        _logger = logger;
     }
+
+    public void Add(Show show)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Show Get(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public List<Show> GetAll()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Read(string name)
+    {
+        _logger.Log(LogLevel.Information, "Reading");
+        Console.WriteLine("*** I am reading");
+    }
+
+    public string Write()
+    {
+        _logger.Log(LogLevel.Information, "Writing");
+        Console.WriteLine("*** I am writing");
+        return Console.ReadLine();
+    }
+
 }

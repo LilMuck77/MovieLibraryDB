@@ -8,7 +8,7 @@ namespace MovieLibraryDB.Code
 {
     public class Show : Media
     {
-        //Dont think I used these and dont know if I need them either.
+        
         public int Episode { get; set; }
         public int Season { get; set; }
         public string[] Writers { get; set; }

@@ -8,14 +8,38 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Interfaces\Interface1.cs" />
+    <None Remove="Files\movies.csv" />
+    <None Remove="Files\movies10.csv" />
+    <None Remove="Files\shows.csv" />
+    <None Remove="Files\videos.csv" />
   </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Files\shows.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Files\movies.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Files\movies10.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Files\videos.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="NReco.Logging.File" Version="1.1.4" />
   </ItemGroup>
 
