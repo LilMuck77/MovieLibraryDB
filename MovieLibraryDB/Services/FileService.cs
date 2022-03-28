@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.Extensions.Logging;
-using MovieLibraryDB.Code;
+using MovieLibraryDB.Models;
 using MovieLibraryDB.Interfaces;
 
 namespace MovieLibraryDB.Services;

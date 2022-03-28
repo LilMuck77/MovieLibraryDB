@@ -1,7 +1,7 @@
 ﻿using System;
 
 
-namespace MovieLibraryDB.Code
+namespace MovieLibraryDB.Models
 {
     public abstract class Media
     {

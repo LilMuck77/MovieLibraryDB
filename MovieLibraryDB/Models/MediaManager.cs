@@ -1,7 +1,7 @@
 ﻿using System;
 
 
-namespace MovieLibraryDB.Code
+namespace MovieLibraryDB.Models
 {
     public class MediaManager
     {
@@ -39,6 +39,7 @@ namespace MovieLibraryDB.Code
                 movieCount += 1;
 
             }
+            movieReader.Close();
 
             //REPEAT STEPS FOR VIDEO OBJECTS AND SHOW OBJECTS FROM MOVIE OBJECTS
 
@@ -67,6 +68,7 @@ namespace MovieLibraryDB.Code
                 showCount += 1;
 
             }
+            showReader.Close();
 
 
 
@@ -99,8 +101,14 @@ namespace MovieLibraryDB.Code
                 videoCount += 1;
 
             }
+            videoReader.Close();
+
+
+
+
 
         }
+       
         //List each MOVIE object
         public void ListMovies()
         {

@@ -2,7 +2,7 @@
 using System;
 using MovieLibraryDB.Interfaces;
 using MovieLibraryDB.Services;
-using MovieLibraryDB.Code;
+using MovieLibraryDB.Models;
 using Newtonsoft.Json;
 
 

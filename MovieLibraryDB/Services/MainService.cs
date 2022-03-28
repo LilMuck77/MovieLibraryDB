@@ -1,7 +1,7 @@
-﻿using MovieLibraryDB.Code;
+﻿using MovieLibraryDB.Models;
 using MovieLibraryDB.Interfaces;
 using Newtonsoft.Json;
-
+using MovieLibraryDB.Dao;
 
 namespace MovieLibraryDB.Services;
 
@@ -12,6 +12,7 @@ namespace MovieLibraryDB.Services;
 /// </summary>
 public class MainService : IMainService
     {
+    
     private readonly string movieListFile = "Files/movies10.csv";
     private readonly string showListFile = "Files/shows.csv";
     private readonly string videoListFile = "Files/videos.csv";
@@ -22,13 +23,15 @@ public class MainService : IMainService
         _jsonService = jsonService;
     }
 
+   
+
     // Logic would need to exist to validate inputs and data prior to writing to the file
     // You would need to decide where this logic would reside.
     // Is it part of the FileService or some other service?
 
     public void Invoke()
         {
-
+        var orchestrator = new OrchestratorService();
         var mediaManager = new MediaManager();
         string movieListFile = "Files/movies.csv";
 
@@ -51,6 +54,7 @@ public class MainService : IMainService
                 Console.WriteLine("1) Display Movies ");
                 Console.WriteLine("2) Add A New Movie");
                 Console.WriteLine("3) Media Display Choice");
+                Console.WriteLine("4) Search Media data by Title");
                 Console.WriteLine("Press enter or any other key to quit");
 
                 myMenuChoice = Console.ReadLine();
@@ -226,15 +230,30 @@ public class MainService : IMainService
 
 
                 }
+                else if (myMenuChoice == "4")
+                {
+                    //search all media titles
+                    Console.WriteLine("Search for a title.");
+                    Console.WriteLine("Enter Title: ");
+                    var searchString = Console.ReadLine();
+                    var searchResults = orchestrator.SearchAllMedia(searchString);
+                    Console.Write("Here are your search results: ");
+                    searchResults.ForEach(Console.WriteLine);
 
 
 
-            } while (myMenuChoice == "1" || myMenuChoice == "2" || myMenuChoice == "3");
+                }
+
+
+
+            } while (myMenuChoice == "1" || myMenuChoice == "2" || myMenuChoice == "3" || myMenuChoice == "4");
         }
 
 
 
 
     }
+
+    
 }
 

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MovieLibraryDB.Code
+namespace MovieLibraryDB.Models
 {
     public class Video : Media
     {
@@ -12,6 +12,10 @@ namespace MovieLibraryDB.Code
         public int Length { get; set; }
         public int[] Regions { get; set; }
 
+        public override string ToString()
+        {
+            return $"{Id}: {Title}";
+        }
         public override void Display()
         {
             //Write to program and loop the array properties
