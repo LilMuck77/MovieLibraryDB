@@ -31,7 +31,7 @@ public class MainService : IMainService
 
     public void Invoke()
         {
-        var orchestrator = new OrchestratorService();
+        //var orchestrator = new OrchestratorService();
         var mediaManager = new MediaManager();
         string movieListFile = "Files/movies.csv";
 
@@ -232,12 +232,14 @@ public class MainService : IMainService
                 }
                 else if (myMenuChoice == "4")
                 {
+                    var orchestrator = new OrchestratorService();
+
                     //search all media titles
                     Console.WriteLine("Search for a title.");
                     Console.WriteLine("Enter Title: ");
-                    var searchString = Console.ReadLine();
+                    var searchString = Console.ReadLine().ToUpper();
                     var searchResults = orchestrator.SearchAllMedia(searchString);
-                    Console.Write("Here are your search results: ");
+                    Console.WriteLine("Here are your search results: ");
                     searchResults.ForEach(Console.WriteLine);
 
 
