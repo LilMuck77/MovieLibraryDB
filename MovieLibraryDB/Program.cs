@@ -2,7 +2,7 @@
 using System;
 using MovieLibraryDB.Interfaces;
 using MovieLibraryDB.Services;
-using MovieLibraryDB.Models;
+using MovieLibraryDB.DataModels;
 using Newtonsoft.Json;
 
 
@@ -12,7 +12,7 @@ namespace MovieLibraryDB
     {
         public static void Main(string[] args)
         {
-            Show show = new Show();
+           
 
             //StartUp broken?
             try
@@ -28,10 +28,7 @@ namespace MovieLibraryDB
             {
                 Console.Error.WriteLine(e);
             }
-            JsonService js = new JsonService();
-            js.Add(show);
-           var json = js.Write();
-            Console.WriteLine(json);
+          
             
         }
     }

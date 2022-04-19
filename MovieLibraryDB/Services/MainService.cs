@@ -1,261 +1,211 @@
-﻿using MovieLibraryDB.Models;
+﻿using MovieLibraryDB.DataModels;
 using MovieLibraryDB.Interfaces;
 using Newtonsoft.Json;
 using MovieLibraryDB.Dao;
+using MovieLibraryDB.Context;
+using System.Linq;
 
 namespace MovieLibraryDB.Services;
 
 
-/// <summary>
-///     You would need to inject your interfaces here to execute the methods in Invoke()
-///     See the commented out code as an example
-/// </summary>
+
 public class MainService : IMainService
-    {
-    
-    private readonly string movieListFile = "Files/movies10.csv";
-    private readonly string showListFile = "Files/shows.csv";
-    private readonly string videoListFile = "Files/videos.csv";
-    private readonly IService _fileService;
-    private readonly IService _jsonService;
-    public MainService(IService jsonService)
-    {
-        _jsonService = jsonService;
-    }
+{
 
-   
-
-    // Logic would need to exist to validate inputs and data prior to writing to the file
-    // You would need to decide where this logic would reside.
-    // Is it part of the FileService or some other service?
 
     public void Invoke()
-        {
-        //var orchestrator = new OrchestratorService();
-        var mediaManager = new MediaManager();
-        string movieListFile = "Files/movies.csv";
+    {
 
 
-        //exception handle existing file
-        if (!File.Exists(movieListFile))
 
+
+        string myMenuChoice;
+        do
         {
-            ;
-            Console.WriteLine("File does not exist : {FILE} ", movieListFile);
-        }
-        else
-        {
-            //jump into file
-            //read menu
-            string myMenuChoice;
-            do
+            //display menu
+            Console.WriteLine("1) Search Movies ");
+            Console.WriteLine("2) Add Movie");
+            Console.WriteLine("3) Update Movie");
+            Console.WriteLine("4) Delete Movie");
+            Console.WriteLine("Press enter or any other key to quit");
+
+            myMenuChoice = Console.ReadLine();
+
+
+
+            if (myMenuChoice == "1")
             {
-                //display menu
-                Console.WriteLine("1) Display Movies ");
-                Console.WriteLine("2) Add A New Movie");
-                Console.WriteLine("3) Media Display Choice");
-                Console.WriteLine("4) Search Media data by Title");
-                Console.WriteLine("Press enter or any other key to quit");
+                //SEARCH MOVIE
 
-                myMenuChoice = Console.ReadLine();
-
-                List<long> IdList = new List<long>();
-                List<string> TitleList = new List<string>();
-                List<string> GenreList = new List<string>();
+                //handle empty nulls for ALL
+                //handle if exist
+                //search all or by user count
 
 
 
-                StreamReader sr = new StreamReader(movieListFile);
+                string searchMovie;
+                Console.WriteLine("Enter the Title of the Movie to search.");
+                searchMovie = Console.ReadLine();
+                
 
-                //dont read header
-                sr.ReadLine();
 
-                while (!sr.EndOfStream)
+                using (var context = new MovieContext())
                 {
-                    string theMovieElements = sr.ReadLine();
-                    int index = theMovieElements.IndexOf('"');
+                    var doesItExist = context.Movies.FirstOrDefault(x => x.Title == searchMovie);
 
-                    //if no quote, then no comma
-                    if (index == -1)
+                    if (!string.IsNullOrEmpty(searchMovie) && !string.IsNullOrWhiteSpace(searchMovie))// && doesItExist?.Title == searchMovie)
                     {
-                        //split the movie elements by the comma into an array to hold
-                        string[] movieElements = theMovieElements.Split(',');
-                        //add 1st array element to movie id list
-                        IdList.Add(long.Parse(movieElements[0]));
-                        //add 2nd array element to movie title list
-                        TitleList.Add(movieElements[1]);
-                        //add 3rd array element to movie genre list
-                        // replace "|" with ", "
-                        GenreList.Add(movieElements[2].Replace("|", ", "));
+                        var myMovieSearch = context.Movies.ToList().Where(x => x.Title.Contains(searchMovie, StringComparison.CurrentCultureIgnoreCase));                        // Console.WriteLine($"ID: {myMovieSearch.Id}, Title: {myMovieSearch.Title}, Release Date: {myMovieSearch.ReleaseDate}");
 
-                    }
-                    //else statement if title does have quotes
-                    else
-                    {
-                        //extract movie title by deleting movie id and comma and genre
-                        //first movie id and comma
-                        IdList.Add(long.Parse(theMovieElements.Substring(0, index - 1)));
-                        //get rid of  first quote
-                        theMovieElements = theMovieElements.Substring(index + 1);
-                        index = theMovieElements.IndexOf('"');
-                        //add movie title to movie title list
-                        TitleList.Add(theMovieElements.Substring(0, index));
-                        theMovieElements = theMovieElements.Substring(index + 2);
-                        //add genre from the movie elements
-                        GenreList.Add(theMovieElements.Replace("|", ","));
-
-                    }
-                }
-                //close movie file when done
-                sr.Close();
-
-
-
-
-
-                if (myMenuChoice == "1")
-                {
-                    //ask user input how many to display
-
-
-                    string usersNumber;
-                    Console.WriteLine("Enter the number of movies to display or enter 0 for all.");
-                    usersNumber = Console.ReadLine();
-                    int theNumber = Int32.Parse(usersNumber);
-                    //handle exception in future for users response
-
-                    if (usersNumber == "0")
-                    {
-
-                        for (int i = 0; i < IdList.Count; i++)
+                        //multiple search diplay
+                        Console.WriteLine("Searching Movies");
+                        foreach (var movie in myMovieSearch)
                         {
-                            Console.WriteLine($"Id: {IdList[i]}");
-                            Console.WriteLine($"Title: {TitleList[i]}");
-                            Console.WriteLine($"Genre(s): {GenreList[i]}");
-                            Console.WriteLine();
+                            Console.WriteLine($"Id: {movie.Id}, Title: {movie.Title}, Realase Date: {movie.ReleaseDate}");
                         }
                     }
                     else
                     {
-                        for (int i = 0; i < theNumber; i++)
-                        {
-                            Console.WriteLine($"Id: {IdList[i]}");
-                            Console.WriteLine($"Title: {TitleList[i]}");
-                            Console.WriteLine($"Genre(s): {GenreList[i]}");
-                            Console.WriteLine();
-                        }
+                        Console.WriteLine("Search cannot be null or empty or the movie does not exist!");
+
                     }
 
-
                 }
-                else if (myMenuChoice == "2")
+
+
+
+            }
+            else if (myMenuChoice == "2")
+            {
+                //ADD MOVIE
+                Console.WriteLine("Add movie selected:");
+                Console.WriteLine("Enter the movie title: ");
+                string newMovieTitle = Console.ReadLine();
+
+                //handle duplicate
+                //make sure not duplicate, string match
+
+
+                /* if (movie.Title.Contains(newMovieTitle))
+                 {
+                     Console.WriteLine("Movie title already exists in file data.");
+
+                 }*/
+
+                // else
+
+                using (var context = new MovieContext())
                 {
-                    // Add movie to list
-                    // get user input for movie title
-                    Console.WriteLine("Enter the movie title and (release year).");
-                    string usersMovieTitle = Console.ReadLine();
-                    //make sure not duplicate, string match
-                    if (TitleList.Contains(usersMovieTitle))
+                    var doesItExist = context.Movies.FirstOrDefault(x => x.Title == newMovieTitle);
+
+                    if (!string.IsNullOrEmpty(newMovieTitle) && !string.IsNullOrWhiteSpace(newMovieTitle) && doesItExist?.Title != newMovieTitle)
                     {
-                        Console.WriteLine("Movie title already exists in file data.");
-                        //logger.LogInformation("Duplicate movie title {Title}", movieTitle);
+                        var movie = new Movie();
+                        //handle format
+
+                        Console.WriteLine("Enter release date: (Format: DD/MM/YYYY) ");
+                        string newReleaseDate = Console.ReadLine();
+
+
+                        movie.Title = newMovieTitle;
+                        movie.ReleaseDate = Convert.ToDateTime(newReleaseDate);
+
+
+                        context.Movies.Add(movie);
+                        context.SaveChanges();
+
+                        var myNewMovie = context.Movies.FirstOrDefault(x => x.Title == newMovieTitle);
+                        Console.WriteLine($"Added Movie - Id: {movie.Id}, Title: {movie.Title}, Realase Date: {movie.ReleaseDate}");
 
                     }
                     else
                     {
-
-                        //make new movie element
-                        long newMovieId = IdList.Max() + 1;
-                        //get genres
-                        List<string> genresList = new List<string>();
-                        string myGenre;
-                        do
-                        {
-                            Console.WriteLine("Enter the movie genres or type 'exit' when finsihed");
-                            myGenre = Console.ReadLine();
-                            //validate response
-                            if (myGenre != "exit" && myGenre.Length > 0)
-                            {
-                                genresList.Add(myGenre);
-                            }
-                           ;
-
-
-
-                        } while (myGenre != "exit");
-                        //handle response if no genres listed
-                        if (genresList.Count == 0)
-                        {
-                            genresList.Add("N/A");
-                        }
-                        //join genres by | so when displayed it with split correctly
-                        string joinGenres = string.Join("|", genresList);
-                        //this part was difficult
-                        usersMovieTitle = usersMovieTitle.IndexOf(',') != -1 ? $"\"{usersMovieTitle}\"" : usersMovieTitle;
-                        Console.WriteLine($"{newMovieId}, {usersMovieTitle}, {joinGenres}");
-
-                        StreamWriter sw = new StreamWriter(movieListFile, true);
-                        sw.WriteLine($"{newMovieId}, {usersMovieTitle}, {joinGenres}");
-                        sw.Close();
-
-                        IdList.Add(newMovieId);
-                        TitleList.Add(usersMovieTitle);
-                        GenreList.Add(joinGenres);
-
+                        Console.WriteLine("Title cannot be null, empty or it already exists!");
                     }
-
-
 
                 }
 
-                else if (myMenuChoice == "3")
+
+
+            }
+
+            else if (myMenuChoice == "3")
+            {
+                //UPDATE MOVEI
+
+                //handle if exist, null, and whitespace
+                Console.WriteLine("Enter Movie Title to Update: ");
+                var movieTitle = Console.ReadLine();
+
+
+
+                using (var context = new MovieContext())
                 {
-                    Console.WriteLine("Which Media would you like to display? 1) Movie, 2) Show, 3)Video");
-                    string myMediaChoice = Console.ReadLine();
+                    var doesItExist = context.Movies.FirstOrDefault(x => x.Title == movieTitle);
 
-                    if (myMediaChoice == "1")
+                    if (!string.IsNullOrEmpty(movieTitle) && !string.IsNullOrWhiteSpace(movieTitle) && doesItExist?.Title == movieTitle)
                     {
-                        mediaManager.ListMovies();
+
+                        Console.WriteLine("Enter Updated Movie Title: ");
+                        var movieTitleUpdate = Console.ReadLine();
+
+                        var updateMovie = context.Movies.FirstOrDefault(x => x.Title == movieTitle);
+                        Console.WriteLine($"Movie Before Update - ID: {updateMovie.Id}, Title: {updateMovie.Title}");
+
+                        updateMovie.Title = movieTitleUpdate;
+                        Console.WriteLine($"Movie After Update - ID: {updateMovie.Id}, Title: {updateMovie.Title}");
+
+
+                        context.Movies.Update(updateMovie);
+                        context.SaveChanges();
+
                     }
-                    else if (myMediaChoice == "2")
+                    else
                     {
-
-                        mediaManager.ListShows();
-                    }
-                    else if (myMediaChoice == "3")
-                    {
-
-                        mediaManager.ListVideos();
+                        Console.WriteLine("Title cannot be null, empty or it doesn't exist!");
                     }
 
 
                 }
-                else if (myMenuChoice == "4")
+
+
+            }
+            else if (myMenuChoice == "4")
+            {
+                //DELETE MOVIE
+                Console.WriteLine("Enter Movie Title to Delete: ");
+                var movieToDelete = Console.ReadLine();
+
+                using (var context = new MovieContext())
                 {
-                    var orchestrator = new OrchestratorService();
+                    var doesItExist = context.Movies.FirstOrDefault(x => x.Title == movieToDelete);
 
-                    //search all media titles
-                    Console.WriteLine("Search for a title.");
-                    Console.WriteLine("Enter Title: ");
-                    var searchString = Console.ReadLine().ToUpper();
-                    var searchResults = orchestrator.SearchAllMedia(searchString);
-                    Console.WriteLine("Here are your search results: ");
-                    searchResults.ForEach(Console.WriteLine);
+                    if (!string.IsNullOrEmpty(movieToDelete) && !string.IsNullOrWhiteSpace(movieToDelete) && doesItExist?.Title == movieToDelete)
+                    { 
+                         var deleteMovie = context.Movies.FirstOrDefault(x => x.Title == movieToDelete);
+                    Console.WriteLine($"Deleting movie with ID: {deleteMovie?.Id} and Title: {deleteMovie?.Title}");
 
-
-
+                    // verify exists first
+                    context.Movies.Remove(deleteMovie);
+                    context.SaveChanges();
+                    }
+                   
                 }
 
 
+            }
 
-            } while (myMenuChoice == "1" || myMenuChoice == "2" || myMenuChoice == "3" || myMenuChoice == "4");
-        }
 
+
+        } while (myMenuChoice == "1" || myMenuChoice == "2" || myMenuChoice == "3" || myMenuChoice == "4");
+
+        Console.WriteLine("Thanks for using the Movie Library!");
 
 
 
     }
 
-    
+
+
 }
 

@@ -24,9 +24,7 @@ internal class Startup
 
         // Add new lines of code here to register any interfaces and concrete services you create
         services.AddTransient<IMainService, MainService>();
-        services.AddTransient<IService, FileService>();
-        //services.AddTransient<IService, JsonService>();
-        services.AddTransient<IOrchestrator, OrchestratorService>();
+       
 
         return services.BuildServiceProvider();
     }
