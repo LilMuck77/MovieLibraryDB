@@ -9,6 +9,8 @@ namespace MovieLibraryDB.DataModels
         public string Title { get; set; }
         public DateTime ReleaseDate { get; set; }
 
+       
+
         
         public virtual ICollection<MovieGenre> MovieGenres {get;set;}
         public virtual ICollection<UserMovie> UserMovies {get;set;}
